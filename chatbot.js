@@ -1,21 +1,35 @@
+// Instale as dependências:
+// npm install whatsapp-web.js qrcode-terminal
+
+const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
-const { Client } = require('whatsapp-web.js');
-const client = new Client();
 
-// Gera o QR Code para login
-client.on('qr', qr => {
+const client = new Client({
+    authStrategy: new LocalAuth(), // Salva a sessão automaticamente
+});
+
+// Gera QR code no terminal se não houver sessão salva
+client.on('qr', (qr) => {
     qrcode.generate(qr, { small: true });
+    console.log('Escaneie o QR code acima');
 });
 
-// Quando estiver pronto
+// Evento quando o bot está pronto
 client.on('ready', () => {
-    console.log('Chatbot da ICNG RAIO HKW conectado com sucesso!');
+    console.log('✅ Bot está online e pronto!');
 });
 
-// Função delay
-const delay = ms => new Promise(res => setTimeout(res, ms));
+// Evento quando recebe mensagem
+client.on('message', message => {
+    console.log(`📩 Mensagem recebida de ${message.from}: ${message.body}`);
 
-// Inicia o bot
+    // Responde automaticamente 'Oi!' se alguém enviar 'Olá'
+    if (message.body.toLowerCase() === 'olá') {
+        message.reply('Oi! Tudo bem? Eu sou um bot 🤖');
+    }
+});
+
+// Inicializa o bot
 client.initialize();
 
 // Responde mensagens
@@ -33,8 +47,6 @@ client.on('message', async msg => {
         await client.sendMessage(msg.from, '✨Você escolheu a categoria *Parte de Cima* da RAIO.✨');
         await delay(3000);
         await client.sendMessage(msg.from, 'Acesse:🔗https://sites.google.com/view/raiodrop/best-sellers/parte-de-cima');
-        await delay(3000);
-        await client.sendMessage(msg.from, 'Eu me chamo *Izabel Cristina*🤠, qual é o seu nome? vamos trocar contatos?');
 
         return;
     }
@@ -47,9 +59,7 @@ client.on('message', async msg => {
         await client.sendMessage(msg.from, '✨Você escolheu a categoria *Parte de Baixo* da RAIO.✨');
         await delay(3000);
         await client.sendMessage(msg.from, 'Acesse:🔗https://sites.google.com/view/raiodrop/best-sellers/parte-de-baixo');
-        await delay(3000);
-        await client.sendMessage(msg.from, 'Eu me chamo *Izabel Cristina*🤠, qual é o seu nome? vamos trocar contatos?');
-
+       
         return;
     }
 
@@ -61,8 +71,6 @@ client.on('message', async msg => {
         await client.sendMessage(msg.from, '✨Você escolheu a categoria *Corpo Todo* da RAIO.✨');
         await delay(3000);
         await client.sendMessage(msg.from, 'Acesse:🔗https://sites.google.com/view/raiodrop/best-sellers/corpo-todo');
-        await delay(3000);
-        await client.sendMessage(msg.from, 'Eu me chamo *Izabel Cristina*🤠, qual é o seu nome? vamos trocar contatos?');
 
         return;
     }
@@ -75,9 +83,7 @@ client.on('message', async msg => {
         await client.sendMessage(msg.from, '✨Você escolheu a categoria *Acessórios* da RAIO.✨');
         await delay(3000);
         await client.sendMessage(msg.from, 'Acesse:🔗https://sites.google.com/view/raiodrop/best-sellers/acessorios');
-        await delay(3000);
-        await client.sendMessage(msg.from, 'Eu me chamo *Izabel Cristina*🤠, qual é o seu nome? vamos trocar contatos?');
-
+      
         return;
     }
 
@@ -89,9 +95,7 @@ if ((texto.includes('coleção completa') || texto.includes('best sellers')) && 
         await client.sendMessage(msg.from, '✨Você escolheu a *Coleção Completa Best Sellers* da RAIO.✨');
         await delay(3000);
         await client.sendMessage(msg.from, 'Acesse:🔗https://sites.google.com/view/raiodrop/best-sellers');
-        await delay(3000);
-        await client.sendMessage(msg.from, 'Eu me chamo *Izabel Cristina*🤠, qual é o seu nome? vamos trocar contatos?');
-
+       
         return;
     }
 
@@ -105,8 +109,6 @@ if ((texto.includes('coleção completa') || texto.includes('best sellers')) && 
         await client.sendMessage(msg.from, '🌷Você escolheu a categoria *Boca* da ICNG.🌷');
         await delay(3000);
         await client.sendMessage(msg.from, 'Acesse:🔗https://sites.google.com/view/icngdrop/boca');
-        await delay(3000);
-        await client.sendMessage(msg.from, 'Eu me chamo *Izabel Cristina*🤠, qual é o seu nome? vamos trocar contatos?');
 
         return;
     }
@@ -119,8 +121,6 @@ if ((texto.includes('coleção completa') || texto.includes('best sellers')) && 
         await client.sendMessage(msg.from, '🌷Você escolheu a categoria *Olhos* da ICNG.🌷');
         await delay(3000);
         await client.sendMessage(msg.from, 'Acesse:🔗https://sites.google.com/view/icngdrop/olhos');
-        await delay(3000);
-        await client.sendMessage(msg.from, 'Eu me chamo *Izabel Cristina*🤠, qual é o seu nome? vamos trocar contatos?');
 
         return;
     }
@@ -133,8 +133,6 @@ if ((texto.includes('coleção completa') || texto.includes('best sellers')) && 
         await client.sendMessage(msg.from, '🌷Você escolheu a categoria *Rosto* da ICNG.🌷');
         await delay(3000);
         await client.sendMessage(msg.from, 'Acesse:🔗https://sites.google.com/view/icngdrop/rosto');
-        await delay(3000);
-        await client.sendMessage(msg.from, 'Eu me chamo *Izabel Cristina*🤠, qual é o seu nome? vamos trocar contatos?');
 
         return;
     }
@@ -147,8 +145,6 @@ if ((texto.includes('coleção completa') || texto.includes('best sellers')) && 
         await client.sendMessage(msg.from, '🌷Você escolheu a categoria *Cabelo* da ICNG.🌷');
         await delay(3000);
         await client.sendMessage(msg.from, 'Acesse:🔗https://sites.google.com/view/icngdrop/cabelo');
-        await delay(3000);
-        await client.sendMessage(msg.from, 'Eu me chamo *Izabel Cristina*🤠, qual é o seu nome? vamos trocar contatos?');
 
         return;
     }
@@ -161,8 +157,6 @@ if ((texto.includes('coleção completa') || texto.includes('best sellers')) && 
         await client.sendMessage(msg.from, '🌷Você escolheu a *Coleção Best Sellers* da ICNG.🌷');
         await delay(3000);
         await client.sendMessage(msg.from, 'Acesse:🔗https://sites.google.com/view/icngdrop/best-sellers');
-        await delay(3000);
-        await client.sendMessage(msg.from, 'Eu me chamo *Izabel Cristina*🤠, qual é o seu nome? vamos trocar contatos?');
 
         return;
     }
@@ -177,9 +171,7 @@ if (texto.includes('moda e acessórios') || texto.includes('moda e acessorios'))
     await client.sendMessage(msg.from, '🎀Você escolheu a categoria *Moda e Acessórios* da HKW.🎀');
     await delay(3000);
     await client.sendMessage(msg.from, 'Acesse:🔗 https://sites.google.com/view/hkwdrop/best-sellers/moda-e-acessorios');
-    await delay(3000);
-    await client.sendMessage(msg.from, 'Eu me chamo *Izabel Cristina*🤠, qual é o seu nome? vamos trocar contatos?');
-
+   
     return;
 }
 
@@ -191,8 +183,6 @@ if (texto.includes('beleza e cosméticos') || texto.includes('beleza e cosmetico
     await client.sendMessage(msg.from, '🎀Você escolheu a categoria *Beleza e Cosméticos* da HKW.🎀');
     await delay(3000);
     await client.sendMessage(msg.from, 'Acesse:🔗 https://sites.google.com/view/hkwdrop/best-sellers/beleza-e-cosmeticos');
-    await delay(3000);
-    await client.sendMessage(msg.from, 'Eu me chamo *Izabel Cristina*🤠, qual é o seu nome? vamos trocar contatos?');
 
     return;
 }
@@ -205,9 +195,7 @@ if (texto.includes('casa e decoração') || texto.includes('casa e decoracao')) 
     await client.sendMessage(msg.from, '🎀Você escolheu a categoria *Casa e Decoração* da HKW.🎀');
     await delay(3000);
     await client.sendMessage(msg.from, 'Acesse:🔗 https://sites.google.com/view/hkwdrop/best-sellers/casa-e-decoracao');
-    await delay(3000);
-    await client.sendMessage(msg.from, 'Eu me chamo *Izabel Cristina*🤠, qual é o seu nome? vamos trocar contatos?');
-
+   
     return;
 }
 
@@ -219,8 +207,7 @@ if ((texto.includes('best sellers') || texto.includes('coleção completa')) && 
     await client.sendMessage(msg.from, '🎀Você escolheu a *Coleção Completa Best Sellers* da HKW.🎀');
     await delay(3000);
     await client.sendMessage(msg.from, 'Acesse:🔗 https://sites.google.com/view/hkwdrop/best-sellers');
-    await delay(3000);
-    await client.sendMessage(msg.from, 'Eu me chamo *Izabel Cristina*🤠, qual é o seu nome? vamos trocar contatos?');
+    
 }
 
 });
